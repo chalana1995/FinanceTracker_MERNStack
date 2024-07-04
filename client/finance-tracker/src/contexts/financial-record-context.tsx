@@ -36,7 +36,6 @@ export const FinacialRecordProvider = ({
         "Content-Type": "application/json"
       }
     });
-    console.log("======rrr",response);
     try {
       if (response.ok) {
         const newRecord = await response.json();
