@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState } from "react";
+import { useUser } from "@clerk/clerk-react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 interface FinacialRecord {
   _id?: string;
@@ -26,15 +27,33 @@ export const FinacialRecordProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
+  const { user } = useUser();
+
   const [records, setRecords] = useState<FinacialRecord[]>([]);
+
+  const fetchRecords = async () => {
+    if (!user) return;
+    const response = await fetch(
+      `http://localhost:3001/finacial-records/getAllByUserId/${user?.id}`
+    );
+
+    if (response.ok) {
+      const records = await response.json();
+      setRecords(records);
+    }
+  };
+
+  useEffect(() => {
+    fetchRecords();
+  }, [user]);
 
   const addRecord = async (record: FinacialRecord) => {
     const response = await fetch("http://localhost:3001/finacial-records", {
       method: "POST",
       body: JSON.stringify(record),
       headers: {
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "application/json",
+      },
     });
     try {
       if (response.ok) {
