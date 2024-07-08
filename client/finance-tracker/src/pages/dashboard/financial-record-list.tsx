@@ -1,9 +1,41 @@
-import React from 'react'
+import React from "react";
+import { useFinancialRecords } from "../../contexts/financial-record-context";
+import { useTable, Column, CellProps, Row } from "react-table";
 
 const FinancialRecordList = () => {
-  return (
-    <div>FinancialRecordList</div>
-  )
-}
+  const { records } = useFinancialRecords();
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    useTable({ columns, data: records });
 
-export default FinancialRecordList
+  return (
+    <div className="table-container">
+      <table {...getTableProps()} className="table">
+        <thead>
+          {headerGroups.map((hg) => (
+            <tr {...hg.getHeaderGroupProps()}>
+              {hg.headers.map((column) => (
+                <th {...column.getHeaderGroupProps()}>
+                  {column.render("Header")}
+                </th>
+              ))}
+            </tr>
+          ))}
+        </thead>
+        <tbody {...getTableBodyProps()}>
+          {rows.map((row, idx) => {
+            prepareRow(row);
+            return (
+              <tr {...row.getRowProps()}>
+                {row.cells.map((cell) => (
+                  <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                ))}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
+export default FinancialRecordList;
