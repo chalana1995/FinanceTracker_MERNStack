@@ -21,46 +21,46 @@ const FinancialRecordList = () => {
     {
       Header: "Description",
       accessor: "description",
-      cell: (props) => (
+      Cell: (props) => (
         <EditableCell {...props} updateRecord={() => null} editable={true} />
       )
     },
     {
       Header: "Amount",
       accessor: "amount",
-      cell: (props) => (
+      Cell: (props) => (
         <EditableCell {...props} updateRecord={() => null} editable={true} />
       )
     },
     {
       Header: "Category",
       accessor: "category",
-      cell: (props) => (
+      Cell: (props) => (
         <EditableCell {...props} updateRecord={() => null} editable={true} />
       )
     },
     {
       Header: "Payment Method",
-      accessor: "payementMethod",
-      cell: (props) => (
+      accessor: "paymentMethod",
+      Cell: (props) => (
         <EditableCell {...props} updateRecord={() => null} editable={true} />
       )
     },
     {
       Header: "Date",
       accessor: "date",
-      cell: (props) => (
+      Cell: (props) => (
         <EditableCell {...props} updateRecord={() => null} editable={false} />
       )
     },
     {
       Header: "Delete",
-      accessor: "delete",
-      cell: ({row}) => (
+      id: "delete",
+      Cell: ({row}) => (
         <button onClick={() => null} className="button">Delete</button>
       )
     }
-  ])
+  ], [])
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns, data: records });
 
