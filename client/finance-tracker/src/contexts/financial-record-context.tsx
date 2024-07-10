@@ -14,8 +14,8 @@ export interface FinacialRecord {
 interface FinancialRecordContextType {
   records: FinacialRecord;
   addRecord: (record: FinacialRecord) => void;
-  //   updateRecord: (id: string, newRecord: FinacialRecord) => void;
-  //   deleteRecord: (id: string) => void;
+  updateRecord: (id: string, newRecord: FinacialRecord) => void;
+  deleteRecord: (id: string) => void;
 }
 
 export const FinancialRecordContext = createContext<
@@ -65,8 +65,39 @@ export const FinacialRecordProvider = ({
     }
   };
 
+  const updateRecord = async (id: string, newRecord: FinacialRecord) => {
+    if (!user) return;
+
+    const response = await fetch(
+      `http://localhost:3001/finacial-records/${id}`,
+      {
+        method: "PUT",
+        body: JSON.stringify(newRecord),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    try {
+      if (response.ok) {
+        const newRecord = await response.json();
+        setRecords((prev) =>
+          prev.map((record) => {
+            if (record._id === id) {
+              return newRecord;
+            } else {
+              record;
+            }
+          })
+        );
+      }
+    } catch (error) {
+      console.error("Error", error);
+    }
+  };
+
   return (
-    <FinancialRecordContext.Provider value={{ records, addRecord }}>
+    <FinancialRecordContext.Provider value={{ records, addRecord, updateRecord }}>
       {children}
     </FinancialRecordContext.Provider>
   );
