@@ -45,7 +45,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
 };
 
 const FinancialRecordList = () => {
-  const { records, updateRecord } = useFinancialRecords();
+  const { records, updateRecord, deleteRecord } = useFinancialRecords();
 
   const updateCellRecord = (rowIndex:number, columnId: string, value:any) => {
     const id = records[rowIndex]?._id;
@@ -93,13 +93,13 @@ const FinancialRecordList = () => {
         Header: "Delete",
         id: "delete",
         Cell: ({ row }) => (
-          <button onClick={() => null} className="button">
+          <button onClick={() => deleteRecord(row.original._id ?? "")} className="button">
             Delete
           </button>
         ),
       },
     ],
-    []
+    [records]
   );
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns, data: records });

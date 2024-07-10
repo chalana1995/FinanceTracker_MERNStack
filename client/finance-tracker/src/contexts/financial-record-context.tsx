@@ -66,8 +66,6 @@ export const FinacialRecordProvider = ({
   };
 
   const updateRecord = async (id: string, newRecord: FinacialRecord) => {
-    if (!user) return;
-
     const response = await fetch(
       `http://localhost:3001/finacial-records/${id}`,
       {
@@ -96,8 +94,23 @@ export const FinacialRecordProvider = ({
     }
   };
 
+
+  const deleteRecord = async (id:string) => {
+    const response = await fetch(`http://localhost:3001/finacial-records/${id}`, {
+      method: "DELETE",
+    });
+    try {
+      if (response.ok) {
+        const deleteRecord = await response.json();
+        setRecords((prev) => prev.filter((record) => record._id === deleteRecord._id));
+      }
+    } catch (error) {
+      console.error("Error", error);
+    }
+  }
+
   return (
-    <FinancialRecordContext.Provider value={{ records, addRecord, updateRecord }}>
+    <FinancialRecordContext.Provider value={{ records, addRecord, updateRecord, deleteRecord }}>
       {children}
     </FinancialRecordContext.Provider>
   );
