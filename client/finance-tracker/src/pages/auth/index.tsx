@@ -1,5 +1,6 @@
 import React from 'react'
 import {SignedIn, SignedOut, SignInButton, SignUpButton, UserButton} from "@clerk/clerk-react";
+import {Navigate} from 'react-router-dom'
 
 const Auth = () => {
   return (
@@ -8,9 +9,9 @@ const Auth = () => {
             <SignUpButton mode='modal' />
             <SignInButton mode='modal' />
         </SignedOut>
-        <SignedIn>
-            <UserButton />
-        </SignedIn>
+       <SignedIn>
+         <Navigate to="/" />
+       </SignedIn>
     </div>
   )
 }
